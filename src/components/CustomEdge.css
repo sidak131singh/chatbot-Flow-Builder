@@ -1,0 +1,42 @@
+.edge-button-wrapper {
+  background: transparent;
+}
+
+.edge-delete-button {
+  width: 24px;
+  height: 24px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  opacity: 0;
+  pointer-events: none;
+  color: #666;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Show button on hover */
+.react-flow__edge:hover ~ .edge-button-wrapper .edge-delete-button,
+.edge-button-wrapper:hover .edge-delete-button {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.edge-delete-button:hover {
+  background: #fee;
+  border-color: #d32f2f;
+  color: #d32f2f;
+  transform: scale(1.1);
+}
+
+.edge-delete-button:active {
+  transform: scale(0.95);
+}
+
+.edge-delete-button svg {
+  display: block;
+}
