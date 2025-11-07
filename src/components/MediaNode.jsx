@@ -15,8 +15,6 @@ import './MediaNode.css';
 const MediaNode = ({ data, selected, id }) => {
   const { setNodes, setEdges } = useReactFlow();
   const [showMediaTypeDropdown, setShowMediaTypeDropdown] = useState(false);
-  const [showAddContentMenu, setShowAddContentMenu] = useState(false);
-  const [buttonPositions, setButtonPositions] = useState([]);
   const buttonRefs = useRef([]);
   const nodeRef = useRef(null);
 
@@ -172,104 +170,10 @@ const MediaNode = ({ data, selected, id }) => {
     );
   };
 
-  /**
-   * Add content block (text or media)
-   */
-  const handleAddContent = (contentType) => {
-    const currentContent = data.contentBlocks || [];
-    
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === id) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              contentBlocks: [
-                ...currentContent,
-                { type: contentType, text: '', mediaType: 'image', mediaURL: '' }
-              ],
-            },
-          };
-        }
-        return node;
-      })
-    );
-    setShowAddContentMenu(false);
-  };
-
-  /**
-   * Update content block
-   */
-  const handleContentBlockChange = (index, field, value) => {
-    const updatedContent = [...(data.contentBlocks || [])];
-    updatedContent[index] = {
-      ...updatedContent[index],
-      [field]: value,
-    };
-    
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === id) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              contentBlocks: updatedContent,
-            },
-          };
-        }
-        return node;
-      })
-    );
-  };
-
-  /**
-   * Remove content block
-   */
-  const handleRemoveContentBlock = (index) => {
-    const updatedContent = (data.contentBlocks || []).filter((_, i) => i !== index);
-    
-    setNodes((nds) =>
-      nds.map((node) => {
-        if (node.id === id) {
-          return {
-            ...node,
-            data: {
-              ...node.data,
-              contentBlocks: updatedContent,
-            },
-          };
-        }
-        return node;
-      })
-    );
-  };
-
   const mediaType = data.mediaType || 'image';
   const mediaURL = data.mediaURL || '';
   const caption = data.caption || '';
   const buttons = data.buttons || [];
-  const contentBlocks = data.contentBlocks || [];
-
-  // Update button positions when buttons change
-  useEffect(() => {
-    if (buttons.length > 0) {
-      // Small delay to ensure DOM is updated
-      setTimeout(() => {
-        const positions = buttonRefs.current.map((ref) => {
-          if (ref && nodeRef.current) {
-            const nodeRect = nodeRef.current.getBoundingClientRect();
-            const buttonRect = ref.getBoundingClientRect();
-            const relativeTop = buttonRect.top - nodeRect.top + buttonRect.height / 2;
-            return relativeTop;
-          }
-          return 0;
-        });
-        setButtonPositions(positions);
-      }, 0);
-    }
-  }, [buttons, buttons.length]);
 
   return (
     <div className={`media-node ${selected ? 'selected' : ''}`} ref={nodeRef}>
@@ -427,111 +331,6 @@ const MediaNode = ({ data, selected, id }) => {
             Add Button
           </button>
         )}
-
-        {/* Content Blocks */}
-        {contentBlocks.map((block, index) => (
-          <div key={index} className="content-block">
-            <button
-              className="remove-content-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleRemoveContentBlock(index);
-              }}
-            >
-              ×
-            </button>
-            
-            {block.type === 'text' ? (
-              <div className="media-section">
-                <label className="section-label">Text Content</label>
-                <textarea
-                  className="media-textarea"
-                  value={block.text || ''}
-                  onChange={(e) => {
-                    e.stopPropagation();
-                    handleContentBlockChange(index, 'text', e.target.value);
-                  }}
-                  onClick={(e) => e.stopPropagation()}
-                  placeholder="Enter text here."
-                  rows={3}
-                />
-              </div>
-            ) : (
-              <>
-                <div className="media-section">
-                  <label className="section-label">Media Type</label>
-                  <select
-                    className="media-select"
-                    value={block.mediaType || 'image'}
-                    onChange={(e) => {
-                      e.stopPropagation();
-                      handleContentBlockChange(index, 'mediaType', e.target.value);
-                    }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <option value="image">Image</option>
-                    <option value="video">Video</option>
-                    <option value="audio">Audio</option>
-                    <option value="document">Document</option>
-                  </select>
-                </div>
-                <div className="media-section">
-                  <label className="section-label">Media URL</label>
-                  <input
-                    type="text"
-                    className="media-input"
-                    value={block.mediaURL || ''}
-                    onChange={(e) => {
-                      e.stopPropagation();
-                      handleContentBlockChange(index, 'mediaURL', e.target.value);
-                    }}
-                    onClick={(e) => e.stopPropagation()}
-                    placeholder="Enter media URL."
-                  />
-                </div>
-              </>
-            )}
-          </div>
-        ))}
-
-        {/* Add Content Button */}
-        <div className="add-content-section">
-          <button
-            className="add-content-btn"
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowAddContentMenu(!showAddContentMenu);
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="8" x2="12" y2="16"/>
-              <line x1="8" y1="12" x2="16" y2="12"/>
-            </svg>
-            Add Content
-          </button>
-          
-          {showAddContentMenu && (
-            <div className="content-type-menu" onClick={(e) => e.stopPropagation()}>
-              <div className="menu-label">Choose Content Type</div>
-              <div className="menu-item" onClick={() => handleAddContent('text')}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-                  <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
-                </svg>
-                Text Button
-              </div>
-              <div className="menu-item" onClick={() => handleAddContent('media')}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                  <circle cx="8.5" cy="8.5" r="1.5"/>
-                  <polyline points="21 15 16 10 5 21"/>
-                </svg>
-                Media
-              </div>
-            </div>
-          )}
-        </div>
       </div>
 
       {/* Handles */}

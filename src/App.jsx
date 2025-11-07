@@ -220,8 +220,7 @@ function App() {
               mediaType: 'image',
               mediaURL: '',
               caption: '',
-              buttons: [],
-              contentBlocks: []
+              buttons: []
             }
           : {},
       };
@@ -259,8 +258,7 @@ function App() {
               mediaType: 'image',
               mediaURL: '',
               caption: '',
-              buttons: [],
-              contentBlocks: []
+              buttons: []
             }
           : {},
       };
