@@ -20,13 +20,19 @@ const SaveButton = ({ nodes, edges, onSave, onShowToast }) => {
     }
 
     // Check how many nodes have no incoming connections
+    // Exclude trigger nodes from this count as they are always start nodes
     const nodesWithoutIncoming = nodes.filter(node => {
+      // Skip trigger nodes - they are meant to be start nodes
+      if (node.type === 'trigger') {
+        return false;
+      }
+      
       // Check if this node has any incoming edges
       const hasIncoming = edges.some(edge => edge.target === node.id);
       return !hasIncoming;
     });
 
-    // If more than one node has no incoming connections, it's an error
+    // If more than one node (excluding triggers) has no incoming connections, it's an error
     if (nodesWithoutIncoming.length > 1) {
       return 'Cannot save flow: More than one node has empty target handles.\nEach flow should have only one start node.';
     }

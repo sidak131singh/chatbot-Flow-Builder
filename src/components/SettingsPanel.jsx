@@ -23,7 +23,10 @@ const SettingsPanel = ({ selectedNode, onUpdateNode, onBack }) => {
   const handleTextChange = (e) => {
     const newText = e.target.value;
     setText(newText);
-    onUpdateNode(selectedNode.id, newText);
+    onUpdateNode(selectedNode.id, {
+      ...selectedNode.data,
+      message: newText,
+    });
   };
 
   /**
@@ -33,7 +36,10 @@ const SettingsPanel = ({ selectedNode, onUpdateNode, onBack }) => {
     // Check if text matches the pattern "text message X" where X is a number
     if (text && text.match(/^text message \d+$/)) {
       setText('');
-      onUpdateNode(selectedNode.id, '');
+      onUpdateNode(selectedNode.id, {
+        ...selectedNode.data,
+        message: '',
+      });
     }
   };
 
@@ -68,13 +74,6 @@ const SettingsPanel = ({ selectedNode, onUpdateNode, onBack }) => {
             autoFocus
           />
         </div>
-      </div>
-
-      {/* Footer with tips */}
-      <div className="settings-footer">
-        <p className="settings-hint">
-          💡 Changes are applied instantly
-        </p>
       </div>
     </div>
   );

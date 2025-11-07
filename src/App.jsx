@@ -11,8 +11,12 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 
 import MessageNode from './components/MessageNode';
+import MediaNode from './components/MediaNode';
+import TriggerNode from './components/TriggerNode';
 import NodePanel from './components/NodePanel';
 import SettingsPanel from './components/SettingsPanel';
+import MediaSettingsPanel from './components/MediaSettingsPanel';
+import TriggerSettingsPanel from './components/TriggerSettingsPanel';
 import SaveButton from './components/SaveButton';
 import CustomEdge from './components/CustomEdge';
 import Toast from './components/Toast';
@@ -21,6 +25,8 @@ import './App.css';
 // Define custom node types
 const nodeTypes = {
   message: MessageNode,
+  media: MediaNode,
+  trigger: TriggerNode,
 };
 
 // Define custom edge types
@@ -28,8 +34,18 @@ const edgeTypes = {
   custom: CustomEdge,
 };
 
-// Initial nodes (optional - start with empty canvas or sample nodes)
-const initialNodes = [];
+// Initial nodes - start with trigger node
+const initialNodes = [
+  {
+    id: 'trigger_1',
+    type: 'trigger',
+    position: { x: 100, y: 100 },
+    data: { 
+      triggerEvent: 'keyword',
+      keywords: []
+    },
+  },
+];
 
 // Initial edges
 const initialEdges = [];
@@ -192,12 +208,22 @@ function App() {
       // Get next available node ID
       const nextId = getNextNodeId(nodes);
 
-      // Create new node
+      // Create new node based on type
       const newNode = {
         id: `node_${nextId}`,
-        type: 'message',
+        type: type,
         position,
-        data: { message: `text message ${nextId}` },
+        data: type === 'message' 
+          ? { message: `text message ${nextId}` }
+          : type === 'media'
+          ? { 
+              mediaType: 'image',
+              mediaURL: '',
+              caption: '',
+              buttons: [],
+              contentBlocks: []
+            }
+          : {},
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -221,11 +247,22 @@ function App() {
       // Get next available node ID
       const nextId = getNextNodeId(nodes);
 
+      // Create appropriate node based on type
       const newNode = {
         id: `node_${nextId}`,
-        type: 'message',
+        type: type,
         position,
-        data: { message: `text message ${nextId}` },
+        data: type === 'message' 
+          ? { message: `text message ${nextId}` }
+          : type === 'media'
+          ? { 
+              mediaType: 'image',
+              mediaURL: '',
+              caption: '',
+              buttons: [],
+              contentBlocks: []
+            }
+          : {},
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -234,19 +271,16 @@ function App() {
   );
 
   /**
-   * Update node message text
+   * Update node data (for both message and trigger nodes)
    */
   const onUpdateNode = useCallback(
-    (nodeId, newMessage) => {
+    (nodeId, newData) => {
       setNodes((nds) =>
         nds.map((node) => {
           if (node.id === nodeId) {
             return {
               ...node,
-              data: {
-                ...node.data,
-                message: newMessage,
-              },
+              data: newData,
             };
           }
           return node;
@@ -319,14 +353,28 @@ function App() {
           </ReactFlowProvider>
         </div>
 
-        {/* Right side panel - either NodePanel or SettingsPanel */}
+        {/* Right side panel - either NodePanel, SettingsPanel, MediaSettingsPanel, or TriggerSettingsPanel */}
         <div className="side-panel">
           {selectedNode ? (
-            <SettingsPanel
-              selectedNode={selectedNode}
-              onUpdateNode={onUpdateNode}
-              onBack={onBackToPanel}
-            />
+            selectedNode.type === 'trigger' ? (
+              <TriggerSettingsPanel
+                selectedNode={selectedNode}
+                onUpdateNode={onUpdateNode}
+                onBack={onBackToPanel}
+              />
+            ) : selectedNode.type === 'media' ? (
+              <MediaSettingsPanel
+                selectedNode={selectedNode}
+                onUpdateNode={onUpdateNode}
+                onBack={onBackToPanel}
+              />
+            ) : (
+              <SettingsPanel
+                selectedNode={selectedNode}
+                onUpdateNode={onUpdateNode}
+                onBack={onBackToPanel}
+              />
+            )
           ) : (
             <NodePanel onAddNode={onAddNode} />
           )}

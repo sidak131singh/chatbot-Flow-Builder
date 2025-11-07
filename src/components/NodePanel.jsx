@@ -10,8 +10,8 @@ const NodePanel = ({ onAddNode }) => { // callback function from App.jsx
   };
 
   //Handle click event - adds node to center of canvas
-  const handleAddNode = () => { 
-    onAddNode('message');
+  const handleAddNode = (nodeType) => { 
+    onAddNode(nodeType);
   };
 
   return (
@@ -26,18 +26,22 @@ const NodePanel = ({ onAddNode }) => { // callback function from App.jsx
           className="node-item"
           draggable
           onDragStart={(event) => onDragStart(event, 'message')}
-          onClick={handleAddNode}
+          onClick={() => handleAddNode('message')}
           title="Drag to canvas or click to add"
         >
-          <div className="node-item-icon">💬</div>
           <div className="node-item-label">Message</div>
         </div>
 
-        {/* Placeholder for future node types */}
-        {/* <div className="node-item" draggable>
-          <div className="node-item-icon">🤔</div>
-          <div className="node-item-label">Decision</div>
-        </div> */}
+        {/* Media Node Item - draggable */}
+        <div
+          className="node-item"
+          draggable
+          onDragStart={(event) => onDragStart(event, 'media')}
+          onClick={() => handleAddNode('media')}
+          title="Drag to canvas or click to add"
+        >
+          <div className="node-item-label">Media</div>
+        </div>
       </div>
 
       <div className="panel-footer">
