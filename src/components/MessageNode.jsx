@@ -2,15 +2,14 @@ import React from 'react';
 import { Handle, Position, useReactFlow } from 'reactflow';
 import './MessageNode.css';
 
-/**
- * Custom MessageNode component representing a text message in the chatbot flow
- * Features:
- * - Source handle on the right (outgoing connection)
- * - Target handle on the left (incoming connections)
- * - Displays message text
- * - Highlights when selected
- * - Delete button to remove node
- */
+//handle : creates connection points on nodes
+//position : defines where the handle appears on the node (left, right, top, bottom)
+//useReactFlow : hook to access and manipulate the React Flow state and methods(setNodes, setEdges)
+
+//data : text message content
+//selected : boolean indicating if the node is currently selected
+//id : unique identifier for the node
+
 const MessageNode = ({ data, selected, id }) => {
   const { setNodes, setEdges } = useReactFlow();
 
@@ -21,7 +20,7 @@ const MessageNode = ({ data, selected, id }) => {
   const handleDelete = (e) => {
     e.stopPropagation(); // Prevent node selection when clicking delete
     
-    // Remove the node
+    // Remove the node from the array after filtering out by matching with id 
     setNodes((nodes) => nodes.filter((node) => node.id !== id));
     
     // Remove all edges connected to this node
@@ -31,6 +30,7 @@ const MessageNode = ({ data, selected, id }) => {
   };
 
   return (
+    //if not selected className will be just message-node else 'message-node selected'
     <div className={`message-node ${selected ? 'selected' : ''}`}>
       {/* Header section with icon, title, and delete button */}
       <div className="message-node-header">
@@ -38,10 +38,10 @@ const MessageNode = ({ data, selected, id }) => {
         <div className="message-title">Send Message</div>
         <button 
           className="delete-button" 
-          onClick={handleDelete}
+          onClick={handleDelete} // call handleDelete on click
           title="Delete node"
         >
-          <svg 
+          <svg // svg of the trash bin icon 
             width="14" 
             height="14" 
             viewBox="0 0 24 24" 

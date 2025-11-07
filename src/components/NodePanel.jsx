@@ -1,25 +1,16 @@
 import React from 'react';
 import './NodePanel.css';
 
-/**
- * NodePanel component - displays available node types
- * Users can drag or click items to add new nodes to the canvas
- * Currently supports only "Message" nodes, but extensible for future node types
- */
-const NodePanel = ({ onAddNode }) => {
-  /**
-   * Handle drag start event
-   * Sets the node type in dataTransfer for drop handling
-   */
+
+const NodePanel = ({ onAddNode }) => { // callback function from App.jsx
+ 
   const onDragStart = (event, nodeType) => {
-    event.dataTransfer.setData('application/reactflow', nodeType);
-    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('application/reactflow', nodeType);//Handle drag start event
+    event.dataTransfer.effectAllowed = 'move';  // set cursor to show move icon while moving
   };
 
-  /**
-   * Handle click event - adds node to center of canvas
-   */
-  const handleAddNode = () => {
+  //Handle click event - adds node to center of canvas
+  const handleAddNode = () => { 
     onAddNode('message');
   };
 

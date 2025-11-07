@@ -110,6 +110,20 @@ function App() {
   }, [setEdges]);
 
   /**
+   * Handle node deletion - deselect if selected node is deleted
+   */
+  useEffect(() => {
+    if (selectedNode) {
+      // Check if the selected node still exists
+      const nodeExists = nodes.some(node => node.id === selectedNode.id);
+      if (!nodeExists) {
+        // Node was deleted, go back to NodePanel
+        setSelectedNode(null);
+      }
+    }
+  }, [nodes, selectedNode]);
+
+  /**
    * Handle node selection
    * When a node is clicked, show settings panel
    */

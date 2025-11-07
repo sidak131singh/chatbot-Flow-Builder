@@ -10,7 +10,7 @@
 
 .message-node.selected {
   border-color: #4a90e2;
-  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+  box-shadow: 0 4px 12px rgba(73, 143, 224, 0.3);
 }
 
 .message-node-header {
@@ -48,6 +48,7 @@
   opacity: 0.7;
   color: #555;
 }
+
 
 .delete-button svg {
   display: block;
