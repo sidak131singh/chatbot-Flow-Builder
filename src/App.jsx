@@ -307,14 +307,17 @@ function App() {
         />
       )}
 
-      {/* Header with save button */}
+      {/* Header with validate and download buttons */}
       <header className="app-header">
         <h1 className="app-title">Chatbot Flow Builder</h1>
-        <SaveButton 
-          nodes={nodes} 
-          edges={edges} 
-          onShowToast={showToast}
-        />
+        <div className="header-buttons">
+          <SaveButton 
+            nodes={nodes} 
+            edges={edges} 
+            onShowToast={showToast}
+          />
+          <DownloadButton />
+        </div>
       </header>
 
       {/* Main content area */}
@@ -349,9 +352,6 @@ function App() {
                 pannable
               />
             </ReactFlow>
-            
-            {/* Download Button */}
-            <DownloadButton />
           </ReactFlowProvider>
         </div>
 

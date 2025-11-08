@@ -83,8 +83,8 @@ const SaveButton = ({ nodes, edges, onSave, onShowToast }) => {
   };
 
   return (
-    <button className="save-button" onClick={handleSave} title="Save flow">
-      Save Changes
+    <button className="save-button" onClick={handleSave} title="Validate flow structure">
+      Validate Flow
     </button>
   );
 };
