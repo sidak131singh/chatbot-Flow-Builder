@@ -21,6 +21,7 @@ import SaveButton from './components/SaveButton';
 import DownloadButton from './components/DownloadButton';
 import CustomEdge from './components/CustomEdge';
 import Toast from './components/Toast';
+import Suggestions from './components/Suggestions';
 import './App.css';
 
 // Define custom node types
@@ -96,6 +97,9 @@ function App() {
   
   // Toast notification state
   const [toast, setToast] = useState(null);
+  
+  // Suggestions state
+  const [suggestions, setSuggestions] = useState(null);
 
   /**
    * Show toast notification
@@ -109,6 +113,20 @@ function App() {
    */
   const closeToast = useCallback(() => {
     setToast(null);
+  }, []);
+
+  /**
+   * Show suggestions
+   */
+  const showSuggestions = useCallback((suggestionsList) => {
+    setSuggestions(suggestionsList);
+  }, []);
+
+  /**
+   * Close suggestions
+   */
+  const closeSuggestions = useCallback(() => {
+    setSuggestions(null);
   }, []);
 
   /**
@@ -277,16 +295,21 @@ function App() {
       setNodes((nds) =>
         nds.map((node) => {
           if (node.id === nodeId) {
-            return {
+            const updatedNode = {
               ...node,
               data: newData,
             };
+            // Update selectedNode if it's the one being updated
+            if (selectedNode && selectedNode.id === nodeId) {
+              setSelectedNode(updatedNode);
+            }
+            return updatedNode;
           }
           return node;
         })
       );
     },
-    [setNodes]
+    [setNodes, selectedNode]
   );
 
   /**
@@ -307,6 +330,15 @@ function App() {
         />
       )}
 
+      {/* Suggestions box */}
+      {suggestions && (
+        <Suggestions
+          suggestions={suggestions}
+          onClose={closeSuggestions}
+          hasToast={!!toast}
+        />
+      )}
+
       {/* Header with validate and download buttons */}
       <header className="app-header">
         <h1 className="app-title">Chatbot Flow Builder</h1>
@@ -315,8 +347,9 @@ function App() {
             nodes={nodes} 
             edges={edges} 
             onShowToast={showToast}
+            onShowSuggestions={showSuggestions}
           />
-          <DownloadButton />
+          <DownloadButton reactFlowInstance={reactFlowInstance} />
         </div>
       </header>
 

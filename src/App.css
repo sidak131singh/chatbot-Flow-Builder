@@ -27,8 +27,7 @@
 .header-buttons {
   display: flex;
   gap: 10px;
-  max-width: 280px;
-  width: 280px;
+  align-items: center;
 }
 
 .app-content {

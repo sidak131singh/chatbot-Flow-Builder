@@ -6,23 +6,30 @@ import './Toast.css';
  * @param {string} message - The message to display
  * @param {string} type - 'success' or 'error'
  * @param {function} onClose - Callback when toast is closed
- * @param {number} duration - Auto-close duration in ms (default: 3000)
+ * @param {number} duration - Auto-close duration in ms (default: auto-calculated based on message length)
  */
-const Toast = ({ message, type = 'success', onClose, duration = 3000 }) => {
+const Toast = ({ message, type = 'success', onClose, duration }) => {
+  // Auto-calculate duration based on message length if not provided
+  const autoDuration = duration || (message.length > 100 ? 8000 : 4000);
+  
   useEffect(() => {
     const timer = setTimeout(() => {
       onClose();
-    }, duration);
+    }, autoDuration);
 
     return () => clearTimeout(timer);
-  }, [duration, onClose]);
+  }, [autoDuration, onClose]);
 
   return (
     <div className={`toast toast-${type}`}>
-      <span className="toast-message">{message}</span>
-      <button className="toast-close" onClick={onClose}>
-        ×
-      </button>
+      <div className="toast-message">
+        {message.split('\n').map((line, index) => (
+          <React.Fragment key={index}>
+            {line}
+            {index < message.split('\n').length - 1 && <br />}
+          </React.Fragment>
+        ))}
+      </div>
     </div>
   );
 };

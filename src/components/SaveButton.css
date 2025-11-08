@@ -9,6 +9,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 2px 4px rgba(74, 144, 226, 0.2);
+  white-space: nowrap;
 }
 
 .save-button:hover {

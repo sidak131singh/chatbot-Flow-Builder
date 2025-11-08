@@ -179,7 +179,7 @@ const MediaNode = ({ data, selected, id }) => {
     <div className={`media-node ${selected ? 'selected' : ''}`} ref={nodeRef}>
       {/* Delete button */}
       <button className="delete-node-btn" onClick={handleDelete} title="Delete node">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"/>
         </svg>
       </button>
@@ -192,7 +192,7 @@ const MediaNode = ({ data, selected, id }) => {
             <circle cx="8.5" cy="8.5" r="1.5"/>
             <polyline points="21 15 16 10 5 21"/>
           </svg>
-          <span>Media Button</span>
+          <span>Send Media</span>
         </div>
       </div>
 

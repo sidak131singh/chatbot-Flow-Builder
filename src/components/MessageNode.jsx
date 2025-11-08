@@ -109,7 +109,9 @@ const MessageNode = ({ data, selected, id }) => {
     <div className={`message-node ${selected ? 'selected' : ''}`}>
       {/* Header section with icon, title, and delete button */}
       <div className="message-node-header">
-        <div className="message-icon">💬</div>
+        <svg className="message-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
         <div className="message-title">Send Message</div>
         <button 
           className="delete-button" 
