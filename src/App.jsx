@@ -18,6 +18,7 @@ import SettingsPanel from './components/SettingsPanel';
 import MediaSettingsPanel from './components/MediaSettingsPanel';
 import TriggerSettingsPanel from './components/TriggerSettingsPanel';
 import SaveButton from './components/SaveButton';
+import DownloadButton from './components/DownloadButton';
 import CustomEdge from './components/CustomEdge';
 import Toast from './components/Toast';
 import './App.css';
@@ -348,6 +349,9 @@ function App() {
                 pannable
               />
             </ReactFlow>
+            
+            {/* Download Button */}
+            <DownloadButton />
           </ReactFlowProvider>
         </div>
 
