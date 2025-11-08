@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Handle, Position, useReactFlow } from 'reactflow';
 import './MessageNode.css';
 
@@ -6,12 +6,15 @@ import './MessageNode.css';
 //position : defines where the handle appears on the node (left, right, top, bottom)
 //useReactFlow : hook to access and manipulate the React Flow state and methods(setNodes, setEdges)
 
-//data : text message content
+//data : text message content, buttons array
 //selected : boolean indicating if the node is currently selected
 //id : unique identifier for the node
 
 const MessageNode = ({ data, selected, id }) => {
   const { setNodes, setEdges } = useReactFlow();
+  const buttonRefs = useRef([]);
+
+  const buttons = data.buttons || [];
 
   /**
    * Handle node deletion
@@ -26,6 +29,78 @@ const MessageNode = ({ data, selected, id }) => {
     // Remove all edges connected to this node
     setEdges((edges) => 
       edges.filter((edge) => edge.source !== id && edge.target !== id)
+    );
+  };
+
+  /**
+   * Add a quick reply button (max 3)
+   */
+  const handleAddButton = (e) => {
+    e.stopPropagation();
+    if (buttons.length >= 3) return;
+    
+    setNodes((nodes) =>
+      nodes.map((node) => {
+        if (node.id === id) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              buttons: [...buttons, { text: '' }],
+            },
+          };
+        }
+        return node;
+      })
+    );
+  };
+
+  /**
+   * Update button text
+   */
+  const handleButtonTextChange = (index, newText) => {
+    setNodes((nodes) =>
+      nodes.map((node) => {
+        if (node.id === id) {
+          const updatedButtons = [...buttons];
+          updatedButtons[index] = { text: newText };
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              buttons: updatedButtons,
+            },
+          };
+        }
+        return node;
+      })
+    );
+  };
+
+  /**
+   * Remove a button
+   */
+  const handleRemoveButton = (index) => {
+    const updatedButtons = buttons.filter((_, i) => i !== index);
+    
+    setNodes((nodes) =>
+      nodes.map((node) => {
+        if (node.id === id) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              buttons: updatedButtons,
+            },
+          };
+        }
+        return node;
+      })
+    );
+
+    // Remove edges connected to this button's handle
+    setEdges((edges) =>
+      edges.filter((edge) => edge.sourceHandle !== `button-${index}` || edge.source !== id)
     );
   };
 
@@ -61,9 +136,75 @@ const MessageNode = ({ data, selected, id }) => {
       
       {/* Body section with message text */}
       <div className="message-node-body">
-        <div className="message-text">
-          {data.message || 'Enter your message...'}
+        <div className="message-text-container">
+          <div className="message-text">
+            {data.message || 'Enter your message...'}
+          </div>
         </div>
+
+        {/* Quick Reply Buttons */}
+        {buttons.length > 0 && (
+          <div className="message-section">
+            <label className="section-label">Quick Reply Buttons</label>
+            {buttons.map((button, index) => (
+              <div 
+                key={index} 
+                className="button-input-row-wrapper"
+              >
+                <div 
+                  className="button-input-row"
+                  ref={(el) => (buttonRefs.current[index] = el)}
+                >
+                  <input
+                    type="text"
+                    className="button-input"
+                    value={button.text}
+                    onChange={(e) => {
+                      e.stopPropagation();
+                      handleButtonTextChange(index, e.target.value);
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                    placeholder={`Button ${index + 1} text`}
+                  />
+                  <button
+                    className="remove-button-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      handleRemoveButton(index);
+                    }}
+                    onMouseDown={(e) => e.stopPropagation()}
+                    title="Remove button"
+                  >
+                    ×
+                  </button>
+                </div>
+                {/* Source handle for this specific button */}
+                <Handle
+                  type="source"
+                  position={Position.Right}
+                  id={`button-${index}`}
+                  className="button-handle-inline"
+                />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Add Button */}
+        {buttons.length < 3 && (
+          <button
+            className="add-button-btn"
+            onClick={handleAddButton}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="16"/>
+              <line x1="8" y1="12" x2="16" y2="12"/>
+            </svg>
+            Add Button
+          </button>
+        )}
       </div>
 
       {/* Target handle (left side) - accepts incoming connections */}
@@ -74,13 +215,15 @@ const MessageNode = ({ data, selected, id }) => {
         className="custom-handle"
       />
 
-      {/* Source handle (right side) - creates outgoing connections */}
-      <Handle
-        type="source"
-        position={Position.Right}
-        id="source"
-        className="custom-handle"
-      />
+      {/* Only show default source handle if no buttons exist */}
+      {buttons.length === 0 && (
+        <Handle
+          type="source"
+          position={Position.Right}
+          id="source"
+          className="custom-handle"
+        />
+      )}
     </div>
   );
 };

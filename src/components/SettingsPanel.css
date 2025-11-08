@@ -140,3 +140,89 @@
 .settings-content::-webkit-scrollbar-thumb:hover {
   background: #999;
 }
+
+/* Button input row */
+.button-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.button-input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #333;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.button-input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+}
+
+.button-input::placeholder {
+  color: #9ca3af;
+}
+
+.remove-btn {
+  background: #fee2e2;
+  border: none;
+  color: #dc2626;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.remove-btn:hover {
+  background: #fecaca;
+  transform: scale(1.05);
+}
+
+.remove-btn:active {
+  transform: scale(0.95);
+}
+
+/* Add Button */
+.add-button {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px dashed #3b82f6;
+  border-radius: 6px;
+  background: white;
+  color: #3b82f6;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.add-button:hover {
+  background: #eff6ff;
+  border-color: #2563eb;
+}
+
+.add-button:active {
+  transform: scale(0.98);
+}
+
+.add-button svg {
+  flex-shrink: 0;
+}

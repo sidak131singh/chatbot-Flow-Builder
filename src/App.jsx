@@ -214,7 +214,7 @@ function App() {
         type: type,
         position,
         data: type === 'message' 
-          ? { message: `text message ${nextId}` }
+          ? { message: '', buttons: [] }
           : type === 'media'
           ? { 
               mediaType: 'image',
@@ -252,7 +252,7 @@ function App() {
         type: type,
         position,
         data: type === 'message' 
-          ? { message: `text message ${nextId}` }
+          ? { message: '', buttons: [] }
           : type === 'media'
           ? { 
               mediaType: 'image',

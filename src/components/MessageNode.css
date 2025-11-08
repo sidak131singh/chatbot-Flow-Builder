@@ -71,6 +71,21 @@
   border-radius: 0 0 8px 8px;
 }
 
+.message-text-container {
+  padding: 8px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background: white;
+  cursor: text;
+  transition: all 0.2s;
+  min-height: 40px;
+}
+
+.message-text-container:hover {
+  border-color: #b0b0b0;
+  background: #fafafa;
+}
+
 .message-text {
   font-size: 12px;
   color: #555;
@@ -90,4 +105,129 @@
 
 .custom-handle:hover {
   background: #4a90e2;
+}
+
+/* Message section styling */
+.message-section {
+  margin-top: 12px;
+}
+
+.section-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+/* Button input row wrapper - contains input row and handle */
+.button-input-row-wrapper {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.button-input-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.button-input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #333;
+  background: white;
+  transition: all 0.2s;
+}
+
+.button-input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+}
+
+.button-input::placeholder {
+  color: #9ca3af;
+}
+
+.remove-button-btn {
+  background: #fee2e2;
+  border: none;
+  color: #dc2626;
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.remove-button-btn:hover {
+  background: #fecaca;
+  transform: scale(1.05);
+}
+
+.remove-button-btn:active {
+  transform: scale(0.95);
+}
+
+/* Handle positioned inline with button row */
+.button-handle-inline {
+  position: absolute !important;
+  right: -21px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 10px !important;
+  height: 10px !important;
+  background: #555 !important;
+  border: 2px solid white !important;
+  border-radius: 50% !important;
+  z-index: 10 !important;
+}
+
+.button-handle-inline:hover {
+  background: #4a90e2 !important;
+  transform: translateY(-50%) scale(1.2) !important;
+}
+
+/* Add Button */
+.add-button-btn {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 8px;
+  border: 1.5px dashed #3b82f6;
+  border-radius: 6px;
+  background: white;
+  color: #3b82f6;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.add-button-btn:hover {
+  background: #eff6ff;
+  border-color: #2563eb;
+}
+
+.add-button-btn:active {
+  transform: scale(0.98);
+}
+
+.add-button-btn svg {
+  flex-shrink: 0;
 }
