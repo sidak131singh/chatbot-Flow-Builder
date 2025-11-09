@@ -74,26 +74,36 @@
 }
 
 .message-text-container {
-  padding: 8px 10px;
-  border: 1px solid #e0e0e0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  transition: none;
+  padding: 0;
+}
+
+.message-text-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
   border-radius: 6px;
+  font-size: 13px;
+  color: #1f2937;
   background: white;
-  cursor: text;
   transition: all 0.2s;
+  font-family: inherit;
+  box-sizing: border-box;
+  resize: vertical;
   min-height: 40px;
+  outline: none;
 }
 
-.message-text-container:hover {
-  border-color: #b0b0b0;
-  background: #fafafa;
+.message-text-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.message-text {
-  font-size: 12px;
-  color: #555;
-  line-height: 1.4;
-  word-wrap: break-word;
-  max-width: 250px;
+.message-text-input::placeholder {
+  color: #9ca3af;
 }
 
 /* Custom handle styling */

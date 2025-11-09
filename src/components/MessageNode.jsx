@@ -17,6 +17,29 @@ const MessageNode = ({ data, selected, id }) => {
   const buttons = data.buttons || [];
 
   /**
+   * Handle message text change
+   */
+  const handleMessageChange = (e) => {
+    e.stopPropagation();
+    const newMessage = e.target.value;
+    
+    setNodes((nodes) =>
+      nodes.map((node) => {
+        if (node.id === id) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              message: newMessage,
+            },
+          };
+        }
+        return node;
+      })
+    );
+  };
+
+  /**
    * Handle node deletion
    * Removes the node and all connected edges
    */
@@ -139,9 +162,14 @@ const MessageNode = ({ data, selected, id }) => {
       {/* Body section with message text */}
       <div className="message-node-body">
         <div className="message-text-container">
-          <div className="message-text">
-            {data.message || 'Enter your message...'}
-          </div>
+          <textarea
+            className="message-text-input"
+            value={data.message || ''}
+            onChange={handleMessageChange}
+            onClick={(e) => e.stopPropagation()}
+            placeholder="Enter your message..."
+            rows={3}
+          />
         </div>
 
         {/* Quick Reply Buttons */}

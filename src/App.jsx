@@ -130,6 +130,22 @@ function App() {
   }, []);
 
   /**
+   * Sync selectedNode with nodes array changes
+   * This ensures the settings panel always shows real-time data
+   */
+  useEffect(() => {
+    if (selectedNode) {
+      const updatedNode = nodes.find(node => node.id === selectedNode.id);
+      if (updatedNode) {
+        // Only update if the data has actually changed to avoid infinite loops
+        if (JSON.stringify(updatedNode.data) !== JSON.stringify(selectedNode.data)) {
+          setSelectedNode(updatedNode);
+        }
+      }
+    }
+  }, [nodes, selectedNode]);
+
+  /**
    * Handle edge deletion from CustomEdge component
    */
   useEffect(() => {

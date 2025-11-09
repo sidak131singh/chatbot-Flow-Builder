@@ -97,6 +97,8 @@ const SettingsPanel = ({ selectedNode, onUpdateNode, onBack }) => {
             placeholder="Enter your message here..."
             rows={6}
             autoFocus
+            disabled={false}
+            readOnly={false}
           />
         </div>
 
